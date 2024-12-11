@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/AlecAivazis/survey/v2/terminal"
 	pseudotty "github.com/creack/pty"
+	"github.com/spbsoluble/survey/v2/terminal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -23,10 +23,12 @@ func TestRenderer_countLines(t *testing.T) {
 	defer pty.Close()
 	defer tty.Close()
 
-	err = pseudotty.Setsize(tty, &pseudotty.Winsize{
-		Rows: 30,
-		Cols: uint16(termWidth),
-	})
+	err = pseudotty.Setsize(
+		tty, &pseudotty.Winsize{
+			Rows: 30,
+			Cols: uint16(termWidth),
+		},
+	)
 	require.Nil(t, err)
 
 	r := Renderer{
@@ -84,9 +86,11 @@ func TestRenderer_countLines(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			n := r.countLines(*tt.buf)
-			assert.Equal(t, tt.wants, n)
-		})
+		t.Run(
+			tt.name, func(t *testing.T) {
+				n := r.countLines(*tt.buf)
+				assert.Equal(t, tt.wants, n)
+			},
+		)
 	}
 }

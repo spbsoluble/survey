@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
 	expect "github.com/Netflix/go-expect"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -69,63 +69,71 @@ type PromptTest struct {
 func RunPromptTest(t *testing.T, test PromptTest) {
 	t.Helper()
 	var answer interface{}
-	RunTest(t, test.procedure, func(stdio terminal.Stdio) error {
-		var err error
-		if p, ok := test.prompt.(wantsStdio); ok {
-			p.WithStdio(stdio)
-		}
+	RunTest(
+		t, test.procedure, func(stdio terminal.Stdio) error {
+			var err error
+			if p, ok := test.prompt.(wantsStdio); ok {
+				p.WithStdio(stdio)
+			}
 
-		answer, err = test.prompt.Prompt(defaultPromptConfig())
-		return err
-	})
+			answer, err = test.prompt.Prompt(defaultPromptConfig())
+			return err
+		},
+	)
 	require.Equal(t, test.expected, answer)
 }
 
 func RunPromptTestKeepFilter(t *testing.T, test PromptTest) {
 	t.Helper()
 	var answer interface{}
-	RunTest(t, test.procedure, func(stdio terminal.Stdio) error {
-		var err error
-		if p, ok := test.prompt.(wantsStdio); ok {
-			p.WithStdio(stdio)
-		}
-		config := defaultPromptConfig()
-		config.KeepFilter = true
-		answer, err = test.prompt.Prompt(config)
-		return err
-	})
+	RunTest(
+		t, test.procedure, func(stdio terminal.Stdio) error {
+			var err error
+			if p, ok := test.prompt.(wantsStdio); ok {
+				p.WithStdio(stdio)
+			}
+			config := defaultPromptConfig()
+			config.KeepFilter = true
+			answer, err = test.prompt.Prompt(config)
+			return err
+		},
+	)
 	require.Equal(t, test.expected, answer)
 }
 
 func RunPromptTestRemoveSelectAll(t *testing.T, test PromptTest) {
 	t.Helper()
 	var answer interface{}
-	RunTest(t, test.procedure, func(stdio terminal.Stdio) error {
-		var err error
-		if p, ok := test.prompt.(wantsStdio); ok {
-			p.WithStdio(stdio)
-		}
-		config := defaultPromptConfig()
-		config.RemoveSelectAll = true
-		answer, err = test.prompt.Prompt(config)
-		return err
-	})
+	RunTest(
+		t, test.procedure, func(stdio terminal.Stdio) error {
+			var err error
+			if p, ok := test.prompt.(wantsStdio); ok {
+				p.WithStdio(stdio)
+			}
+			config := defaultPromptConfig()
+			config.RemoveSelectAll = true
+			answer, err = test.prompt.Prompt(config)
+			return err
+		},
+	)
 	require.Equal(t, test.expected, answer)
 }
 
 func RunPromptTestRemoveSelectNone(t *testing.T, test PromptTest) {
 	t.Helper()
 	var answer interface{}
-	RunTest(t, test.procedure, func(stdio terminal.Stdio) error {
-		var err error
-		if p, ok := test.prompt.(wantsStdio); ok {
-			p.WithStdio(stdio)
-		}
-		config := defaultPromptConfig()
-		config.RemoveSelectNone = true
-		answer, err = test.prompt.Prompt(config)
-		return err
-	})
+	RunTest(
+		t, test.procedure, func(stdio terminal.Stdio) error {
+			var err error
+			if p, ok := test.prompt.(wantsStdio); ok {
+				p.WithStdio(stdio)
+			}
+			config := defaultPromptConfig()
+			config.RemoveSelectNone = true
+			answer, err = test.prompt.Prompt(config)
+			return err
+		},
+	)
 	require.Equal(t, test.expected, answer)
 }
 
@@ -392,13 +400,17 @@ func TestAsk(t *testing.T) {
 	for _, test := range tests {
 		// Capture range variable.
 		test := test
-		t.Run(test.name, func(t *testing.T) {
-			answers := make(map[string]interface{})
-			RunTest(t, test.procedure, func(stdio terminal.Stdio) error {
-				return Ask(test.questions, &answers, WithStdio(stdio.In, stdio.Out, stdio.Err))
-			})
-			require.Equal(t, test.expected, answers)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				answers := make(map[string]interface{})
+				RunTest(
+					t, test.procedure, func(stdio terminal.Stdio) error {
+						return Ask(test.questions, &answers, WithStdio(stdio.In, stdio.Out, stdio.Err))
+					},
+				)
+				require.Equal(t, test.expected, answers)
+			},
+		)
 	}
 }
 
@@ -459,32 +471,41 @@ func Test_computeCursorOffset_MultiSelect(t *testing.T) {
 		},
 		{
 			name: "wide choices, uneven",
-			opts: core.OptionAnswerList([]string{
-				"wide one wide one wide one",
-				"two", "three",
-				"wide four wide four wide four",
-				"five", "six"}),
+			opts: core.OptionAnswerList(
+				[]string{
+					"wide one wide one wide one",
+					"two", "three",
+					"wide four wide four wide four",
+					"five", "six",
+				},
+			),
 			termWidth: 20,
 			ix:        0,
 			want:      8,
 		},
 		{
 			name: "wide choices, even",
-			opts: core.OptionAnswerList([]string{
-				"wide one wide one wide one",
-				"two", "three",
-				"012345678901",
-				"five", "six"}),
+			opts: core.OptionAnswerList(
+				[]string{
+					"wide one wide one wide one",
+					"two", "three",
+					"012345678901",
+					"five", "six",
+				},
+			),
 			termWidth: 20,
 			ix:        0,
 			want:      7,
 		},
 		{
 			name: "wide choices, wide before idx",
-			opts: core.OptionAnswerList([]string{
-				"wide one wide one wide one",
-				"wide two wide two wide two",
-				"three", "four", "five", "six"}),
+			opts: core.OptionAnswerList(
+				[]string{
+					"wide one wide one wide one",
+					"wide two wide two wide two",
+					"three", "four", "five", "six",
+				},
+			),
 			termWidth: 20,
 			ix:        2,
 			want:      4,
@@ -499,11 +520,13 @@ func Test_computeCursorOffset_MultiSelect(t *testing.T) {
 			SelectedIndex: tt.ix,
 			Config:        defaultPromptConfig(),
 		}
-		t.Run(tt.name, func(t *testing.T) {
-			if got := computeCursorOffset(tmpl, data, tt.opts, tt.ix, tt.termWidth); got != tt.want {
-				t.Errorf("computeCursorOffset() = %v, want %v", got, tt.want)
-			}
-		})
+		t.Run(
+			tt.name, func(t *testing.T) {
+				if got := computeCursorOffset(tmpl, data, tt.opts, tt.ix, tt.termWidth); got != tt.want {
+					t.Errorf("computeCursorOffset() = %v, want %v", got, tt.want)
+				}
+			},
+		)
 	}
 }
 
@@ -553,32 +576,41 @@ func Test_computeCursorOffset_Select(t *testing.T) {
 		},
 		{
 			name: "wide choices, uneven",
-			opts: core.OptionAnswerList([]string{
-				"wide one wide one wide one",
-				"two", "three",
-				"wide four wide four wide four",
-				"five", "six"}),
+			opts: core.OptionAnswerList(
+				[]string{
+					"wide one wide one wide one",
+					"two", "three",
+					"wide four wide four wide four",
+					"five", "six",
+				},
+			),
 			termWidth: 20,
 			ix:        0,
 			want:      8,
 		},
 		{
 			name: "wide choices, even",
-			opts: core.OptionAnswerList([]string{
-				"wide one wide one wide one",
-				"two", "three",
-				"01234567890123456",
-				"five", "six"}),
+			opts: core.OptionAnswerList(
+				[]string{
+					"wide one wide one wide one",
+					"two", "three",
+					"01234567890123456",
+					"five", "six",
+				},
+			),
 			termWidth: 20,
 			ix:        0,
 			want:      7,
 		},
 		{
 			name: "wide choices, wide before idx",
-			opts: core.OptionAnswerList([]string{
-				"wide one wide one wide one",
-				"wide two wide two wide two",
-				"three", "four", "five", "six"}),
+			opts: core.OptionAnswerList(
+				[]string{
+					"wide one wide one wide one",
+					"wide two wide two wide two",
+					"three", "four", "five", "six",
+				},
+			),
 			termWidth: 20,
 			ix:        2,
 			want:      4,
@@ -593,11 +625,13 @@ func Test_computeCursorOffset_Select(t *testing.T) {
 			SelectedIndex: tt.ix,
 			Config:        defaultPromptConfig(),
 		}
-		t.Run(tt.name, func(t *testing.T) {
-			if got := computeCursorOffset(tmpl, data, tt.opts, tt.ix, tt.termWidth); got != tt.want {
-				t.Errorf("computeCursorOffset() = %v, want %v", got, tt.want)
-			}
-		})
+		t.Run(
+			tt.name, func(t *testing.T) {
+				if got := computeCursorOffset(tmpl, data, tt.opts, tt.ix, tt.termWidth); got != tt.want {
+					t.Errorf("computeCursorOffset() = %v, want %v", got, tt.want)
+				}
+			},
+		)
 	}
 }
 
@@ -609,19 +643,21 @@ func TestAsk_Validation(t *testing.T) {
 	var res struct {
 		TLDN string
 	}
-	err := Ask([]*Question{
-		{
-			Name:   "TLDN",
-			Prompt: p,
-			Validate: func(v interface{}) error {
-				s := v.(string)
-				if strings.ToLower(s) != s {
-					return errors.New("value contains uppercase characters")
-				}
-				return nil
+	err := Ask(
+		[]*Question{
+			{
+				Name:   "TLDN",
+				Prompt: p,
+				Validate: func(v interface{}) error {
+					s := v.(string)
+					if strings.ToLower(s) != s {
+						return errors.New("value contains uppercase characters")
+					}
+					return nil
+				},
 			},
-		},
-	}, &res, WithValidator(MinLength(1)), WithValidator(MaxLength(5)))
+		}, &res, WithValidator(MinLength(1)), WithValidator(MaxLength(5)),
+	)
 	if err != nil {
 		t.Fatalf("Ask() = %v", err)
 	}

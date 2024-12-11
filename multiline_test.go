@@ -7,8 +7,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,13 +29,19 @@ func TestMultilineRender(t *testing.T) {
 			"Test Multiline question output without default",
 			Multiline{Message: "What is your favorite month:"},
 			MultilineTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [Enter 2 empty lines to finish]", defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s What is your favorite month: [Enter 2 empty lines to finish]",
+				defaultIcons().Question.Text,
+			),
 		},
 		{
 			"Test Multiline question output with default",
 			Multiline{Message: "What is your favorite month:", Default: "April"},
 			MultilineTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: (April) [Enter 2 empty lines to finish]", defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s What is your favorite month: (April) [Enter 2 empty lines to finish]",
+				defaultIcons().Question.Text,
+			),
 		},
 		{
 			"Test Multiline answer output",
@@ -47,51 +53,67 @@ func TestMultilineRender(t *testing.T) {
 			"Test Multiline question output without default but with help hidden",
 			Multiline{Message: "What is your favorite month:", Help: "This is helpful"},
 			MultilineTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [Enter 2 empty lines to finish]", string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [Enter 2 empty lines to finish]",
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Multiline question output with default and with help hidden",
 			Multiline{Message: "What is your favorite month:", Default: "April", Help: "This is helpful"},
 			MultilineTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: (April) [Enter 2 empty lines to finish]", string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: (April) [Enter 2 empty lines to finish]",
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Multiline question output without default but with help shown",
 			Multiline{Message: "What is your favorite month:", Help: "This is helpful"},
 			MultilineTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s What is your favorite month: [Enter 2 empty lines to finish]", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s What is your favorite month: [Enter 2 empty lines to finish]",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 		{
 			"Test Multiline question output with default and with help shown",
 			Multiline{Message: "What is your favorite month:", Default: "April", Help: "This is helpful"},
 			MultilineTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s What is your favorite month: (April) [Enter 2 empty lines to finish]", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s What is your favorite month: (April) [Enter 2 empty lines to finish]",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.title, func(t *testing.T) {
-			r, w, err := os.Pipe()
-			assert.NoError(t, err)
+		t.Run(
+			test.title, func(t *testing.T) {
+				r, w, err := os.Pipe()
+				assert.NoError(t, err)
 
-			test.prompt.WithStdio(terminal.Stdio{Out: w})
-			test.data.Multiline = test.prompt
-			// set the icon set
-			test.data.Config = defaultPromptConfig()
+				test.prompt.WithStdio(terminal.Stdio{Out: w})
+				test.data.Multiline = test.prompt
+				// set the icon set
+				test.data.Config = defaultPromptConfig()
 
-			err = test.prompt.Render(
-				MultilineQuestionTemplate,
-				test.data,
-			)
-			assert.NoError(t, err)
+				err = test.prompt.Render(
+					MultilineQuestionTemplate,
+					test.data,
+				)
+				assert.NoError(t, err)
 
-			assert.NoError(t, w.Close())
-			var buf bytes.Buffer
-			_, err = io.Copy(&buf, r)
-			assert.NoError(t, err)
+				assert.NoError(t, w.Close())
+				var buf bytes.Buffer
+				_, err = io.Copy(&buf, r)
+				assert.NoError(t, err)
 
-			assert.Contains(t, buf.String(), test.expected, test.title)
-		})
+				assert.Contains(t, buf.String(), test.expected, test.title)
+			},
+		)
 	}
 }
 
@@ -152,8 +174,10 @@ func TestMultilinePrompt(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTest(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTest(t, test)
+			},
+		)
 	}
 }

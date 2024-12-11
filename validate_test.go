@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/AlecAivazis/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/core"
 )
 
 func TestRequired_canSucceedOnPrimitiveTypes(t *testing.T) {
@@ -207,6 +207,9 @@ func TestComposeValidators_failsOnSubsequentValidators(t *testing.T) {
 	// if a string longer than 10 passes
 	if err := valid(str); err == nil {
 		// the test failed
-		t.Error("Composed validator did not fail on second first test like expected. Should fail max length > 10 :", str)
+		t.Error(
+			"Composed validator did not fail on second first test like expected. Should fail max length > 10 :",
+			str,
+		)
 	}
 }

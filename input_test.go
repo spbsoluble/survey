@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -50,43 +50,78 @@ func TestInputRender(t *testing.T) {
 			"Test Input question output without default but with help hidden",
 			Input{Message: "What is your favorite month:", Help: "This is helpful"},
 			InputTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [%s for help] ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [%s for help] ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Input question output with default and with help hidden",
 			Input{Message: "What is your favorite month:", Default: "April", Help: "This is helpful"},
 			InputTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [%s for help] (April) ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [%s for help] (April) ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Input question output without default but with help shown",
 			Input{Message: "What is your favorite month:", Help: "This is helpful"},
 			InputTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s What is your favorite month: ", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s What is your favorite month: ",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 		{
 			"Test Input question output with default and with help shown",
 			Input{Message: "What is your favorite month:", Default: "April", Help: "This is helpful"},
 			InputTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s What is your favorite month: (April) ", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s What is your favorite month: (April) ",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 		{
 			"Test Input question output with completion",
 			Input{Message: "What is your favorite month:", Suggest: suggestFn},
 			InputTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [%s for suggestions] ", defaultIcons().Question.Text, string(defaultPromptConfig().SuggestInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [%s for suggestions] ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().SuggestInput),
+			),
 		},
 		{
 			"Test Input question output with suggestions and help hidden",
 			Input{Message: "What is your favorite month:", Suggest: suggestFn, Help: "This is helpful"},
 			InputTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [%s for help, %s for suggestions] ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput), string(defaultPromptConfig().SuggestInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [%s for help, %s for suggestions] ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+				string(defaultPromptConfig().SuggestInput),
+			),
 		},
 		{
 			"Test Input question output with suggestions and default and help hidden",
-			Input{Message: "What is your favorite month:", Suggest: suggestFn, Help: "This is helpful", Default: "April"},
+			Input{
+				Message: "What is your favorite month:",
+				Suggest: suggestFn,
+				Help:    "This is helpful",
+				Default: "April",
+			},
 			InputTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [%s for help, %s for suggestions] (April) ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput), string(defaultPromptConfig().SuggestInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [%s for help, %s for suggestions] (April) ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+				string(defaultPromptConfig().SuggestInput),
+			),
 		},
 		{
 			"Test Input question output with suggestions shown",
@@ -105,29 +140,31 @@ func TestInputRender(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.title, func(t *testing.T) {
-			r, w, err := os.Pipe()
-			assert.NoError(t, err)
+		t.Run(
+			test.title, func(t *testing.T) {
+				r, w, err := os.Pipe()
+				assert.NoError(t, err)
 
-			test.prompt.WithStdio(terminal.Stdio{Out: w})
-			test.data.Input = test.prompt
+				test.prompt.WithStdio(terminal.Stdio{Out: w})
+				test.data.Input = test.prompt
 
-			// set the runtime config
-			test.data.Config = defaultPromptConfig()
+				// set the runtime config
+				test.data.Config = defaultPromptConfig()
 
-			err = test.prompt.Render(
-				InputQuestionTemplate,
-				test.data,
-			)
-			assert.NoError(t, err)
+				err = test.prompt.Render(
+					InputQuestionTemplate,
+					test.data,
+				)
+				assert.NoError(t, err)
 
-			assert.NoError(t, w.Close())
-			var buf bytes.Buffer
-			_, err = io.Copy(&buf, r)
-			assert.NoError(t, err)
+				assert.NoError(t, w.Close())
+				var buf bytes.Buffer
+				_, err = io.Copy(&buf, r)
+				assert.NoError(t, err)
 
-			assert.Contains(t, buf.String(), test.expected)
-		})
+				assert.Contains(t, buf.String(), test.expected)
+			},
+		)
 	}
 }
 
@@ -400,7 +437,10 @@ func TestInputPrompt(t *testing.T) {
 		},
 		{
 			"Test Input prompt must allow moving cursor using right and left arrows, even after suggestions",
-			&Input{Message: "Filename to save:", Suggest: func(string) []string { return []string{".txt", ".csv", ".go"} }},
+			&Input{
+				Message: "Filename to save:",
+				Suggest: func(string) []string { return []string{".txt", ".csv", ".go"} },
+			},
 			func(c expectConsole) {
 				c.ExpectString("Filename to save:")
 				c.Send(string(terminal.KeyTab))
@@ -423,11 +463,13 @@ func TestInputPrompt(t *testing.T) {
 
 	for _, test := range tests {
 		testName := strings.TrimPrefix(test.name, "SKIP: ")
-		t.Run(testName, func(t *testing.T) {
-			if testName != test.name {
-				t.Skipf("warning: flakey test %q", testName)
-			}
-			RunPromptTest(t, test)
-		})
+		t.Run(
+			testName, func(t *testing.T) {
+				if testName != test.name {
+					t.Skipf("warning: flakey test %q", testName)
+				}
+				RunPromptTest(t, test)
+			},
+		)
 	}
 }

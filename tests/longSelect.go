@@ -1,8 +1,9 @@
 //go:build ignore
+// +build ignore
 
 package main
 
-import "github.com/AlecAivazis/survey/v2"
+import "github.com/spbsoluble/survey/v2"
 
 func main() {
 	color := ""

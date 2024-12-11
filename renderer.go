@@ -3,8 +3,8 @@ package survey
 import (
 	"bytes"
 	"fmt"
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 	"golang.org/x/term"
 )
 
@@ -50,10 +50,12 @@ func (r *Renderer) Error(config *PromptConfig, invalid error) error {
 	r.resetPrompt(r.countLines(r.renderedText))
 	r.renderedText.Reset()
 
-	userOut, layoutOut, err := core.RunTemplate(ErrorTemplate, &ErrorTemplateData{
-		Error: invalid,
-		Icon:  config.Icons.Error,
-	})
+	userOut, layoutOut, err := core.RunTemplate(
+		ErrorTemplate, &ErrorTemplateData{
+			Error: invalid,
+			Icon:  config.Icons.Error,
+		},
+	)
 	if err != nil {
 		return err
 	}

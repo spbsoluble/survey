@@ -7,8 +7,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -47,40 +47,50 @@ func TestConfirmRender(t *testing.T) {
 			"Test Confirm with help but help message is hidden",
 			Confirm{Message: "Is pizza your favorite food?", Help: "This is helpful"},
 			ConfirmTemplateData{},
-			fmt.Sprintf("%s Is pizza your favorite food? [%s for help] (y/N) ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s Is pizza your favorite food? [%s for help] (y/N) ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Confirm help output with help message shown",
 			Confirm{Message: "Is pizza your favorite food?", Help: "This is helpful"},
 			ConfirmTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s Is pizza your favorite food? (y/N) ", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s Is pizza your favorite food? (y/N) ",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.title, func(t *testing.T) {
-			r, w, err := os.Pipe()
-			assert.NoError(t, err)
+		t.Run(
+			test.title, func(t *testing.T) {
+				r, w, err := os.Pipe()
+				assert.NoError(t, err)
 
-			test.prompt.WithStdio(terminal.Stdio{Out: w})
-			test.data.Confirm = test.prompt
+				test.prompt.WithStdio(terminal.Stdio{Out: w})
+				test.data.Confirm = test.prompt
 
-			// set the runtime config
-			test.data.Config = defaultPromptConfig()
+				// set the runtime config
+				test.data.Config = defaultPromptConfig()
 
-			err = test.prompt.Render(
-				ConfirmQuestionTemplate,
-				test.data,
-			)
-			assert.NoError(t, err)
+				err = test.prompt.Render(
+					ConfirmQuestionTemplate,
+					test.data,
+				)
+				assert.NoError(t, err)
 
-			assert.NoError(t, w.Close())
-			var buf bytes.Buffer
-			_, err = io.Copy(&buf, r)
-			assert.NoError(t, err)
+				assert.NoError(t, w.Close())
+				var buf bytes.Buffer
+				_, err = io.Copy(&buf, r)
+				assert.NoError(t, err)
 
-			assert.Contains(t, buf.String(), test.expected)
-		})
+				assert.Contains(t, buf.String(), test.expected)
+			},
+		)
 	}
 }
 
@@ -147,8 +157,10 @@ func TestConfirmPrompt(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTest(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTest(t, test)
+			},
+		)
 	}
 }

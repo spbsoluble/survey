@@ -10,8 +10,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 )
 
 func init() {
@@ -42,7 +42,10 @@ func TestSelectRender(t *testing.T) {
 			SelectTemplateData{SelectedIndex: 2, PageEntries: core.OptionAnswerList(prompt.Options)},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your word:  [Use arrows to move, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your word:  [Use arrows to move, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					"  foo",
 					"  bar",
 					fmt.Sprintf("%s baz", defaultIcons().SelectFocus.Text),
@@ -63,7 +66,11 @@ func TestSelectRender(t *testing.T) {
 			SelectTemplateData{SelectedIndex: 2, PageEntries: core.OptionAnswerList(prompt.Options)},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your word:  [Use arrows to move, type to filter, %s for more help]", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+					fmt.Sprintf(
+						"%s Pick your word:  [Use arrows to move, type to filter, %s for more help]",
+						defaultIcons().Question.Text,
+						string(defaultPromptConfig().HelpInput),
+					),
 					"  foo",
 					"  bar",
 					fmt.Sprintf("%s baz", defaultIcons().SelectFocus.Text),
@@ -79,7 +86,10 @@ func TestSelectRender(t *testing.T) {
 			strings.Join(
 				[]string{
 					fmt.Sprintf("%s This is helpful", defaultIcons().Help.Text),
-					fmt.Sprintf("%s Pick your word:  [Use arrows to move, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your word:  [Use arrows to move, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					"  foo",
 					"  bar",
 					fmt.Sprintf("%s baz", defaultIcons().SelectFocus.Text),
@@ -91,29 +101,31 @@ func TestSelectRender(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.title, func(t *testing.T) {
-			r, w, err := os.Pipe()
-			assert.NoError(t, err)
+		t.Run(
+			test.title, func(t *testing.T) {
+				r, w, err := os.Pipe()
+				assert.NoError(t, err)
 
-			test.prompt.WithStdio(terminal.Stdio{Out: w})
-			test.data.Select = test.prompt
+				test.prompt.WithStdio(terminal.Stdio{Out: w})
+				test.data.Select = test.prompt
 
-			// set the icon set
-			test.data.Config = defaultPromptConfig()
+				// set the icon set
+				test.data.Config = defaultPromptConfig()
 
-			err = test.prompt.Render(
-				SelectQuestionTemplate,
-				test.data,
-			)
-			assert.NoError(t, err)
+				err = test.prompt.Render(
+					SelectQuestionTemplate,
+					test.data,
+				)
+				assert.NoError(t, err)
 
-			assert.NoError(t, w.Close())
-			var buf bytes.Buffer
-			_, err = io.Copy(&buf, r)
-			assert.NoError(t, err)
+				assert.NoError(t, w.Close())
+				var buf bytes.Buffer
+				_, err = io.Copy(&buf, r)
+				assert.NoError(t, err)
 
-			assert.Contains(t, buf.String(), test.expected)
-		})
+				assert.Contains(t, buf.String(), test.expected)
+			},
+		)
 	}
 }
 
@@ -366,11 +378,13 @@ func TestSelectPrompt(t *testing.T) {
 
 	for _, test := range tests {
 		testName := strings.TrimPrefix(test.name, "SKIP: ")
-		t.Run(testName, func(t *testing.T) {
-			if testName != test.name {
-				t.Skipf("warning: flakey test %q", testName)
-			}
-			RunPromptTest(t, test)
-		})
+		t.Run(
+			testName, func(t *testing.T) {
+				if testName != test.name {
+					t.Skipf("warning: flakey test %q", testName)
+				}
+				RunPromptTest(t, test)
+			},
+		)
 	}
 }

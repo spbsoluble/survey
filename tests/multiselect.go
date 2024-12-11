@@ -1,12 +1,13 @@
 //go:build ignore
+// +build ignore
 
 package main
 
 import (
 	"fmt"
 
-	"github.com/AlecAivazis/survey/v2"
-	TestUtil "github.com/AlecAivazis/survey/v2/tests/util"
+	"github.com/spbsoluble/survey/v2"
+	TestUtil "github.com/spbsoluble/survey/v2/tests/util"
 )
 
 var answer = []string{}

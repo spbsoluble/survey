@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -36,7 +36,10 @@ func TestEditorRender(t *testing.T) {
 			"Test Editor question output with default",
 			Editor{Message: "What is your favorite month:", Default: "April"},
 			EditorTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: (April) [Enter to launch editor] ", defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s What is your favorite month: (April) [Enter to launch editor] ",
+				defaultIcons().Question.Text,
+			),
 		},
 		{
 			"Test Editor question output with HideDefault",
@@ -54,52 +57,70 @@ func TestEditorRender(t *testing.T) {
 			"Test Editor question output without default but with help hidden",
 			Editor{Message: "What is your favorite month:", Help: "This is helpful"},
 			EditorTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [%s for help] [Enter to launch editor] ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [%s for help] [Enter to launch editor] ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Editor question output with default and with help hidden",
 			Editor{Message: "What is your favorite month:", Default: "April", Help: "This is helpful"},
 			EditorTemplateData{},
-			fmt.Sprintf("%s What is your favorite month: [%s for help] (April) [Enter to launch editor] ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s What is your favorite month: [%s for help] (April) [Enter to launch editor] ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Editor question output without default but with help shown",
 			Editor{Message: "What is your favorite month:", Help: "This is helpful"},
 			EditorTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s What is your favorite month: [Enter to launch editor] ", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s What is your favorite month: [Enter to launch editor] ",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 		{
 			"Test Editor question output with default and with help shown",
 			Editor{Message: "What is your favorite month:", Default: "April", Help: "This is helpful"},
 			EditorTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s What is your favorite month: (April) [Enter to launch editor] ", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s What is your favorite month: (April) [Enter to launch editor] ",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.title, func(t *testing.T) {
-			r, w, err := os.Pipe()
-			assert.NoError(t, err)
+		t.Run(
+			test.title, func(t *testing.T) {
+				r, w, err := os.Pipe()
+				assert.NoError(t, err)
 
-			test.prompt.WithStdio(terminal.Stdio{Out: w})
-			test.data.Editor = test.prompt
+				test.prompt.WithStdio(terminal.Stdio{Out: w})
+				test.data.Editor = test.prompt
 
-			// set the icon set
-			test.data.Config = defaultPromptConfig()
+				// set the icon set
+				test.data.Config = defaultPromptConfig()
 
-			err = test.prompt.Render(
-				EditorQuestionTemplate,
-				test.data,
-			)
-			assert.NoError(t, err)
+				err = test.prompt.Render(
+					EditorQuestionTemplate,
+					test.data,
+				)
+				assert.NoError(t, err)
 
-			assert.NoError(t, w.Close())
-			var buf bytes.Buffer
-			_, err = io.Copy(&buf, r)
-			assert.NoError(t, err)
+				assert.NoError(t, w.Close())
+				var buf bytes.Buffer
+				_, err = io.Copy(&buf, r)
+				assert.NoError(t, err)
 
-			assert.Contains(t, buf.String(), test.expected)
-		})
+				assert.Contains(t, buf.String(), test.expected)
+			},
+		)
 	}
 }
 
@@ -236,8 +257,10 @@ func TestEditorPrompt(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTest(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTest(t, test)
+			},
+		)
 	}
 }

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 )
 
 /*
@@ -217,10 +217,12 @@ func (m *MultiSelect) filterOptions(config *PromptConfig) []core.OptionAnswer {
 	for i, opt := range m.Options {
 		// i the filter says to include the option
 		if filter(m.filter, opt, i) {
-			answers = append(answers, core.OptionAnswer{
-				Index: i,
-				Value: opt,
-			})
+			answers = append(
+				answers, core.OptionAnswer{
+					Index: i,
+					Value: opt,
+				},
+			)
 		}
 	}
 

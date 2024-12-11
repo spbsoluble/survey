@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/AlecAivazis/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/core"
 )
 
 func TestValidationError(t *testing.T) {
@@ -22,7 +22,10 @@ func TestValidationError(t *testing.T) {
 		t.Errorf("Failed to run template to format error: %s", err)
 	}
 
-	expected := fmt.Sprintf("%s Sorry, your reply was invalid: Football is not a valid month\n", defaultIcons().Error.Text)
+	expected := fmt.Sprintf(
+		"%s Sorry, your reply was invalid: Football is not a valid month\n",
+		defaultIcons().Error.Text,
+	)
 
 	if actual != expected {
 		t.Errorf("Formatted error was not formatted correctly. Found:\n%s\nExpected:\n%s", actual, expected)

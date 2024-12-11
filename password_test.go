@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/AlecAivazis/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/core"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,13 +31,21 @@ func TestPasswordRender(t *testing.T) {
 			"Test Password question output with help hidden",
 			Password{Message: "Tell me your secret:", Help: "This is helpful"},
 			PasswordTemplateData{},
-			fmt.Sprintf("%s Tell me your secret: [%s for help] ", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+			fmt.Sprintf(
+				"%s Tell me your secret: [%s for help] ",
+				defaultIcons().Question.Text,
+				string(defaultPromptConfig().HelpInput),
+			),
 		},
 		{
 			"Test Password question output with help shown",
 			Password{Message: "Tell me your secret:", Help: "This is helpful"},
 			PasswordTemplateData{ShowHelp: true},
-			fmt.Sprintf("%s This is helpful\n%s Tell me your secret: ", defaultIcons().Help.Text, defaultIcons().Question.Text),
+			fmt.Sprintf(
+				"%s This is helpful\n%s Tell me your secret: ",
+				defaultIcons().Help.Text,
+				defaultIcons().Question.Text,
+			),
 		},
 	}
 
@@ -90,8 +98,10 @@ func TestPasswordPrompt(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTest(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTest(t, test)
+			},
+		)
 	}
 }

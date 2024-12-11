@@ -10,8 +10,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/AlecAivazis/survey/v2/core"
-	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/spbsoluble/survey/v2/core"
+	"github.com/spbsoluble/survey/v2/terminal"
 )
 
 func init() {
@@ -54,7 +54,10 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("  %s  foo", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar", defaultIcons().MarkedOption.Text),
 					fmt.Sprintf("%s %s  baz", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
@@ -82,7 +85,11 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter, %s for more help]", defaultIcons().Question.Text, string(defaultPromptConfig().HelpInput)),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter, %s for more help]",
+						defaultIcons().Question.Text,
+						string(defaultPromptConfig().HelpInput),
+					),
 					fmt.Sprintf("  %s  foo", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar", defaultIcons().MarkedOption.Text),
 					fmt.Sprintf("%s %s  baz", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
@@ -103,7 +110,10 @@ func TestMultiSelectRender(t *testing.T) {
 			strings.Join(
 				[]string{
 					fmt.Sprintf("%s This is helpful", defaultIcons().Help.Text),
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("  %s  foo", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar", defaultIcons().MarkedOption.Text),
 					fmt.Sprintf("%s %s  baz", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
@@ -122,7 +132,10 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("%s %s  bar", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  baz", defaultIcons().UnmarkedOption.Text),
 				},
@@ -142,10 +155,17 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("  %s  foo - oof", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar - rab", defaultIcons().MarkedOption.Text),
-					fmt.Sprintf("%s %s  baz - zab", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
+					fmt.Sprintf(
+						"%s %s  baz - zab",
+						defaultIcons().SelectFocus.Text,
+						defaultIcons().UnmarkedOption.Text,
+					),
 					fmt.Sprintf("  %s  buz - zub\n", defaultIcons().MarkedOption.Text),
 				},
 				"\n",
@@ -169,10 +189,17 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("  %s  foo - oof", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar", defaultIcons().MarkedOption.Text),
-					fmt.Sprintf("%s %s  baz - zab", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
+					fmt.Sprintf(
+						"%s %s  baz - zab",
+						defaultIcons().SelectFocus.Text,
+						defaultIcons().UnmarkedOption.Text,
+					),
 					fmt.Sprintf("  %s  buz\n", defaultIcons().MarkedOption.Text),
 				},
 				"\n",
@@ -191,7 +218,10 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("  %s  foo", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar", defaultIcons().MarkedOption.Text),
 					fmt.Sprintf("%s %s  baz", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
@@ -213,10 +243,17 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("  %s  foo - foo", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar - bar", defaultIcons().MarkedOption.Text),
-					fmt.Sprintf("%s %s  baz - baz", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
+					fmt.Sprintf(
+						"%s %s  baz - baz",
+						defaultIcons().SelectFocus.Text,
+						defaultIcons().UnmarkedOption.Text,
+					),
 					fmt.Sprintf("  %s  buz - buz\n", defaultIcons().MarkedOption.Text),
 				},
 				"\n",
@@ -235,7 +272,10 @@ func TestMultiSelectRender(t *testing.T) {
 			},
 			strings.Join(
 				[]string{
-					fmt.Sprintf("%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]", defaultIcons().Question.Text),
+					fmt.Sprintf(
+						"%s Pick your words:  [Use arrows to move, space to select, <right> to all, <left> to none, type to filter]",
+						defaultIcons().Question.Text,
+					),
 					fmt.Sprintf("  %s  foo - 0", defaultIcons().UnmarkedOption.Text),
 					fmt.Sprintf("  %s  bar - 1", defaultIcons().MarkedOption.Text),
 					fmt.Sprintf("%s %s  baz - 2", defaultIcons().SelectFocus.Text, defaultIcons().UnmarkedOption.Text),
@@ -247,29 +287,31 @@ func TestMultiSelectRender(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.title, func(t *testing.T) {
-			r, w, err := os.Pipe()
-			assert.NoError(t, err)
+		t.Run(
+			test.title, func(t *testing.T) {
+				r, w, err := os.Pipe()
+				assert.NoError(t, err)
 
-			test.prompt.WithStdio(terminal.Stdio{Out: w})
-			test.data.MultiSelect = test.prompt
+				test.prompt.WithStdio(terminal.Stdio{Out: w})
+				test.data.MultiSelect = test.prompt
 
-			// set the icon set
-			test.data.Config = defaultPromptConfig()
+				// set the icon set
+				test.data.Config = defaultPromptConfig()
 
-			err = test.prompt.Render(
-				MultiSelectQuestionTemplate,
-				test.data,
-			)
-			assert.NoError(t, err)
+				err = test.prompt.Render(
+					MultiSelectQuestionTemplate,
+					test.data,
+				)
+				assert.NoError(t, err)
 
-			assert.NoError(t, w.Close())
-			var buf bytes.Buffer
-			_, err = io.Copy(&buf, r)
-			assert.NoError(t, err)
+				assert.NoError(t, w.Close())
+				var buf bytes.Buffer
+				_, err = io.Copy(&buf, r)
+				assert.NoError(t, err)
 
-			assert.Contains(t, buf.String(), test.expected)
-		})
+				assert.Contains(t, buf.String(), test.expected)
+			},
+		)
 	}
 }
 
@@ -657,9 +699,11 @@ func TestMultiSelectPrompt(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTest(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTest(t, test)
+			},
+		)
 	}
 }
 
@@ -691,9 +735,11 @@ func TestMultiSelectPromptKeepFilter(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTestKeepFilter(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTestKeepFilter(t, test)
+			},
+		)
 	}
 }
 
@@ -717,16 +763,19 @@ func TestMultiSelectPromptRemoveSelectAll(t *testing.T) {
 				c.SendLine("")
 				c.ExpectEOF()
 			},
-			[]core.OptionAnswer{ // we should only have one option selected, not all of them
+			[]core.OptionAnswer{
+				// we should only have one option selected, not all of them
 				{Value: "green", Index: 0},
 			},
 		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTestRemoveSelectAll(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTestRemoveSelectAll(t, test)
+			},
+		)
 	}
 }
 
@@ -750,15 +799,18 @@ func TestMultiSelectPromptRemoveSelectNone(t *testing.T) {
 				c.SendLine("")
 				c.ExpectEOF()
 			},
-			[]core.OptionAnswer{ // we should only have one option selected, not all of them
+			[]core.OptionAnswer{
+				// we should only have one option selected, not all of them
 				{Value: "green", Index: 0},
 			},
 		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			RunPromptTestRemoveSelectNone(t, test)
-		})
+		t.Run(
+			test.name, func(t *testing.T) {
+				RunPromptTestRemoveSelectNone(t, test)
+			},
+		)
 	}
 }
